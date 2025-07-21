@@ -1,91 +1,72 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Tame Impala News</title>
-<style>
-:root{--bg:#0d0d0d;--fg:#f3f3f3;--accent:#ff4d00;}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{background:var(--bg);color:var(--fg);font-family:sans-serif;padding:1rem 0;}
-h1{text-align:center;font-size:clamp(1.8rem,4vw,3rem);margin-bottom:1.5rem;}
-section{max-width:900px;margin:auto;margin-bottom:2rem;}
-.grid{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));}
-.card{background:#141414;padding:1rem;border-radius:10px;cursor:pointer;transition:transform .25s;}
-.card:hover{transform:translateY(-4px);}
-.card h3{font-size:1.1rem;margin-bottom:0.4rem;}
-.card p{font-size:.85rem;color:#bbb;}
-.album-card{text-align:center;}
-.album-card img{width:100%;border-radius:8px;margin-bottom:0.5rem;}
-#player{position:fixed;inset:0;background:rgba(0,0,0,.8);display:none;align-items:center;justify-content:center;}
-#player iframe{width:90vw;max-width:560px;aspect-ratio:16/9;border:0;border-radius:8px;}
-#player button{position:absolute;top:1rem;right:1rem;font-size:2rem;background:none;border:0;color:#fff;cursor:pointer;}
-</style>
-</head>
-<body>
-
-<h1>TAME IMPALA <span style="color:var(--accent)">NEWS</span></h1>
-
-<!-- Noticias -->
+<!-- Noticias ------------------------------------------------------------>
 <section>
-  <div class="grid">
-    <article class="card">
-      <h3>Reedición de *Currents*</h3>
-      <p>Kevin Parker confirma versión deluxe en vinilo.</p>
-    </article>
-    <article class="card">
-      <h3>Colab con The Weeknd</h3>
-      <p>Nueva canción filtrada en redes.</p>
-    </article>
-    <article class="card">
-      <h3>Primavera Sound 2025</h3>
-      <p>Tame Impala será cabeza de cartel en Barcelona.</p>
-    </article>
-    <article class="card">
-      <h3>Rumor de Álbum 5</h3>
-      <p>Fans encuentran pistas en Instagram.</p>
-    </article>
-  </div>
+  <div id="news-box" class="grid"></div>
 </section>
 
-<!-- Álbumes -->
+<!-- Álbumes ------------------------------------------------------------->
 <section>
   <div class="grid">
-    <div class="card album-card" data-yt="pFptt7Cargc">
-      <img src="img/currents.jpg" alt="Currents"/>
-      <strong>Currents</strong>
-    </div>
-    <div class="card album-card" data-yt="wycjnCCgUes">
-      <img src="img/lonerism.jpg" alt="Lonerism"/>
-      <strong>Lonerism</strong>
-    </div>
-    <div class="card album-card" data-yt="IsBUB0W-cD0">
-      <img src="img/innerspeaker.jpg" alt="Innerspeaker"/>
-      <strong>Innerspeaker</strong>
-    </div>
-    <div class="card album-card" data-yt="g1G9_4Ha1uE">
+
+    <div class="card album-card"
+         data-yt="PLHwvDXmNUa92NlFPooY1P5tfDo4T85ORz">
       <img src="img/slow-rush.jpg" alt="The Slow Rush"/>
-      <strong>The Slow Rush</strong>
+      <strong>Escuchar: The Slow Rush</strong>
     </div>
+
+    <div class="card album-card"
+         data-yt="OLAK5uy_k7FTSn7ydw3cNY9X5w2UJYVO7fLXPDTik">
+      <img src="img/currents.jpg" alt="Currents"/>
+      <strong>Escuchar: Currents</strong>
+    </div>
+
+    <div class="card album-card"
+         data-yt="OLAK5uy_klpNi0OC9ETbDP7mEICIT60hLHc_KOZiY">
+      <img src="img/lonerism.jpg" alt="Lonerism"/>
+      <strong>Escuchar: Lonerism</strong>
+    </div>
+
+    <div class="card album-card"
+         data-yt="OLAK5uy_k4doG5RdilYBelHruNokW5rhEUHl46tEM">
+      <img src="img/innerspeaker.jpg" alt="Innerspeaker"/>
+      <strong>Escuchar: Innerspeaker</strong>
+    </div>
+
   </div>
 </section>
 
-<!-- Reproductor -->
+<!-- Reproductor flotante ----------------------------------------------->
 <div id="player">
   <button onclick="closePlayer()">×</button>
   <iframe src="" allowfullscreen></iframe>
 </div>
 
+<!-- SCRIPT ÚNICO -------------------------------------------------------->
 <script>
-function closePlayer(){document.getElementById('player').style.display='none';}
-document.querySelectorAll('.album-card').forEach(card=>{
-  card.onclick=()=>{
-    const id=card.dataset.yt;
-    document.querySelector('#player iframe').src=`https://www.youtube.com/embed/${id}`;
-    document.getElementById('player').style.display='flex';
+/* 1. Noticias cargadas desde news.json */
+const newsBox = document.getElementById('news-box');
+fetch('news.json')
+  .then(r => r.json())
+  .then(arr => {
+    arr.reverse().forEach(n => {
+      newsBox.insertAdjacentHTML('beforeend', `
+        <article class="card">
+          <h3>${n.title}</h3>
+          <p>${n.text}</p>
+          <small>${n.date}</small>
+        </article>`);
+    });
+  });
+
+/* 2. Reproductor de álbumes — abre la playlist completa */
+function closePlayer(){
+  document.getElementById('player').style.display = 'none';
+}
+document.querySelectorAll('.album-card').forEach(card => {
+  card.onclick = () => {
+    const id = card.dataset.yt;
+    document.querySelector('#player iframe').src =
+      `https://www.youtube.com/embed/videoseries?list=${id}`;
+    document.getElementById('player').style.display = 'flex';
   };
 });
 </script>
-
-</body>
-</html>
