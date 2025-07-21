@@ -1,72 +1,26 @@
-<!-- Noticias ------------------------------------------------------------>
-<section>
-  <div id="news-box" class="grid"></div>
-</section>
-
-<!-- Álbumes ------------------------------------------------------------->
+<!-- Álbumes -->
 <section>
   <div class="grid">
 
-    <div class="card album-card"
-         data-yt="PLHwvDXmNUa92NlFPooY1P5tfDo4T85ORz">
-      <img src="img/slow-rush.jpg" alt="The Slow Rush"/>
+    <div class="card album-card" data-yt="PLHwvDXmNUa92NlFPooY1P5tfDo4T85ORz">
+      <img src="img/slow-rush.jpg"  alt="The Slow Rush"/>
       <strong>Escuchar: The Slow Rush</strong>
     </div>
 
-    <div class="card album-card"
-         data-yt="OLAK5uy_k7FTSn7ydw3cNY9X5w2UJYVO7fLXPDTik">
-      <img src="img/currents.jpg" alt="Currents"/>
+    <div class="card album-card" data-yt="OLAK5uy_k7FTSn7ydw3cNY9X5w2UJYVO7fLXPDTik">
+      <img src="img/currents.jpg"   alt="Currents"/>
       <strong>Escuchar: Currents</strong>
     </div>
 
-    <div class="card album-card"
-         data-yt="OLAK5uy_klpNi0OC9ETbDP7mEICIT60hLHc_KOZiY">
-      <img src="img/lonerism.jpg" alt="Lonerism"/>
+    <div class="card album-card" data-yt="OLAK5uy_klpNi0OC9ETbDP7mEICIT60hLHc_KOZiY">
+      <img src="img/lonerism.jpg"   alt="Lonerism"/>
       <strong>Escuchar: Lonerism</strong>
     </div>
 
-    <div class="card album-card"
-         data-yt="OLAK5uy_k4doG5RdilYBelHruNokW5rhEUHl46tEM">
+    <div class="card album-card" data-yt="OLAK5uy_k4doG5RdilYBelHruNokW5rhEUHl46tEM">
       <img src="img/innerspeaker.jpg" alt="Innerspeaker"/>
       <strong>Escuchar: Innerspeaker</strong>
     </div>
 
   </div>
 </section>
-
-<!-- Reproductor flotante ----------------------------------------------->
-<div id="player">
-  <button onclick="closePlayer()">×</button>
-  <iframe src="" allowfullscreen></iframe>
-</div>
-
-<!-- SCRIPT ÚNICO -------------------------------------------------------->
-<script>
-/* 1. Noticias cargadas desde news.json */
-const newsBox = document.getElementById('news-box');
-fetch('news.json')
-  .then(r => r.json())
-  .then(arr => {
-    arr.reverse().forEach(n => {
-      newsBox.insertAdjacentHTML('beforeend', `
-        <article class="card">
-          <h3>${n.title}</h3>
-          <p>${n.text}</p>
-          <small>${n.date}</small>
-        </article>`);
-    });
-  });
-
-/* 2. Reproductor de álbumes — abre la playlist completa */
-function closePlayer(){
-  document.getElementById('player').style.display = 'none';
-}
-document.querySelectorAll('.album-card').forEach(card => {
-  card.onclick = () => {
-    const id = card.dataset.yt;
-    document.querySelector('#player iframe').src =
-      `https://www.youtube.com/embed/videoseries?list=${id}`;
-    document.getElementById('player').style.display = 'flex';
-  };
-});
-</script>
